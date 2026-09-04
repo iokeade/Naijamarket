@@ -1,211 +1,187 @@
-// =========================================
-// NAIJAMARKET AI - APP.JS
-// =========================================
+// ==========================================
+// NAIJAMARKET AI - MAIN JAVASCRIPT
+// ==========================================
+
+// ---------- STORAGE ----------
+const LISTINGS_KEY = "naijaListings";
+const CART_KEY = "naijaCart";
+const ORDERS_KEY = "naijaOrders";
+const SAVED_KEY = "naijaSaved";
+const SELECTED_KEY = "selectedListing";
+
+// ---------- SAMPLE PRODUCTS ----------
+const sampleProducts = [
+    {
+        id: 1,
+        name: "Rice - 50kg Bag",
+        category: "Food",
+        price: 72000,
+        quantity: 20,
+        location: "Mile 12, Lagos",
+        seller: "John Market Store",
+        rating: 4.8,
+        icon: "🍚",
+        description: "Premium quality Nigerian rice. Perfect for homes, restaurants and businesses."
+    },
+    {
+        id: 2,
+        name: "Beans - 50kg Bag",
+        category: "Food",
+        price: 65000,
+        quantity: 15,
+        location: "Onitsha",
+        seller: "Onitsha Food Store",
+        rating: 4.7,
+        icon: "🫘",
+        description: "Fresh quality beans suitable for household and commercial use."
+    },
+    {
+        id: 3,
+        name: "Smartphone",
+        category: "Electronics",
+        price: 350000,
+        quantity: 8,
+        location: "Ikeja, Lagos",
+        seller: "Mary Electronics",
+        rating: 4.7,
+        icon: "📱",
+        description: "Modern smartphone with excellent performance, camera and battery life."
+    },
+    {
+        id: 4,
+        name: "Men's T-Shirt",
+        category: "Fashion",
+        price: 15000,
+        quantity: 30,
+        location: "Aba, Abia",
+        seller: "Aba Fashion Store",
+        rating: 4.5,
+        icon: "👕",
+        description: "Quality men's T-shirt available in different sizes and colors."
+    },
+    {
+        id: 5,
+        name: "Sneakers",
+        category: "Fashion",
+        price: 45000,
+        quantity: 12,
+        location: "Lagos",
+        seller: "Lagos Footwear",
+        rating: 4.6,
+        icon: "👟",
+        description: "Comfortable and stylish sneakers for everyday use."
+    },
+    {
+        id: 6,
+        name: "Fresh Tomatoes",
+        category: "Farm Products",
+        price: 18000,
+        quantity: 50,
+        location: "Mile 12, Lagos",
+        seller: "Fresh Farm Produce",
+        rating: 4.9,
+        icon: "🍅",
+        description: "Fresh Nigerian tomatoes suitable for homes, restaurants and food businesses."
+    }
+];
+
+// ---------- LOAD DATA ----------
+let listings =
+    JSON.parse(localStorage.getItem(LISTINGS_KEY)) || [];
+
+let cart =
+    JSON.parse(localStorage.getItem(CART_KEY)) || [];
+
+let orders =
+    JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+let saved =
+    JSON.parse(localStorage.getItem(SAVED_KEY)) || [];
 
 
-// =========================================
-// STORAGE
-// =========================================
-
-let listings = JSON.parse(
-    localStorage.getItem("naijaListings")
-) || [];
-
-let cart = JSON.parse(
-    localStorage.getItem("naijaCart")
-) || [];
-
-let orders = JSON.parse(
-    localStorage.getItem("naijaOrders")
-) || [];
-
-let savedListings = JSON.parse(
-    localStorage.getItem("naijaSaved")
-) || [];
-
-
-// =========================================
-// SAVE DATA
-// =========================================
-
-function saveData() {
-
-    localStorage.setItem(
-        "naijaListings",
-        JSON.stringify(listings)
-    );
-
-    localStorage.setItem(
-        "naijaCart",
-        JSON.stringify(cart)
-    );
-
-    localStorage.setItem(
-        "naijaOrders",
-        JSON.stringify(orders)
-    );
-
-    localStorage.setItem(
-        "naijaSaved",
-        JSON.stringify(savedListings)
-    );
-}
-
-
-// =========================================
-// SAMPLE PRODUCTS
-// =========================================
-
+// ---------- INITIAL DATA ----------
 if (listings.length === 0) {
-
-    listings = [
-
-        {
-            id: 1,
-            name: "Rice - 50kg Bag",
-            category: "Food",
-            price: 72000,
-            condition: "New",
-            location: "Mile 12, Lagos",
-            description:
-                "Quality premium rice available for wholesale and retail purchase.",
-            quantity: 20,
-            seller: "John Market Store",
-            rating: 4.8,
-            icon: "🍚"
-        },
-
-        {
-            id: 2,
-            name: "Beans - 50kg Bag",
-            category: "Food",
-            price: 65000,
-            condition: "New",
-            location: "Onitsha",
-            description:
-                "Clean and quality beans suitable for wholesale and retail buyers.",
-            quantity: 15,
-            seller: "Onitsha Food Store",
-            rating: 4.7,
-            icon: "🫘"
-        },
-
-        {
-            id: 3,
-            name: "Smartphone",
-            category: "Electronics",
-            price: 350000,
-            condition: "New",
-            location: "Ikeja, Lagos",
-            description:
-                "Brand new smartphone with warranty.",
-            quantity: 8,
-            seller: "Mary Electronics",
-            rating: 4.7,
-            icon: "📱"
-        },
-
-        {
-            id: 4,
-            name: "Men's T-Shirt",
-            category: "Fashion",
-            price: 15000,
-            condition: "New",
-            location: "Aba, Abia",
-            description:
-                "Quality men's T-shirt available in different sizes.",
-            quantity: 30,
-            seller: "Aba Fashion Store",
-            rating: 4.5,
-            icon: "👕"
-        },
-
-        {
-            id: 5,
-            name: "Sneakers",
-            category: "Fashion",
-            price: 45000,
-            condition: "New",
-            location: "Lagos",
-            description:
-                "Comfortable sneakers suitable for everyday use.",
-            quantity: 12,
-            seller: "Lagos Footwear",
-            rating: 4.6,
-            icon: "👟"
-        },
-
-        {
-            id: 6,
-            name: "Fresh Tomatoes",
-            category: "Farm Products",
-            price: 18000,
-            condition: "New",
-            location: "Mile 12, Lagos",
-            description:
-                "Fresh tomatoes directly from farmers and wholesalers.",
-            quantity: 50,
-            seller: "Fresh Farm Produce",
-            rating: 4.9,
-            icon: "🍅"
-        }
-
-    ];
-
+    listings = sampleProducts;
     saveData();
 }
 
 
-// =========================================
-// FORMAT NAIRA
-// =========================================
+// ---------- SAVE DATA ----------
+function saveData() {
+    localStorage.setItem(
+        LISTINGS_KEY,
+        JSON.stringify(listings)
+    );
 
-function formatNaira(amount) {
+    localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(cart)
+    );
 
-    return "₦" + Number(amount).toLocaleString("en-NG");
+    localStorage.setItem(
+        ORDERS_KEY,
+        JSON.stringify(orders)
+    );
 
+    localStorage.setItem(
+        SAVED_KEY,
+        JSON.stringify(saved)
+    );
 }
 
 
-// =========================================
-// CREATE PRODUCT CARD
-// =========================================
+// ---------- FORMAT NAIRA ----------
+function formatNaira(amount) {
+    return "₦" + Number(amount).toLocaleString("en-NG");
+}
+
+
+// ==========================================
+// PRODUCT CARDS
+// ==========================================
 
 function createProductCard(product) {
-
     return `
-
         <div class="product-card">
 
-            <div class="product-image">
-                ${product.icon || "📦"}
+            <div
+                class="product-image"
+                onclick="viewListing(${product.id})"
+            >
+                ${
+                    product.image
+                        ? `<img src="${product.image}" alt="${product.name}">`
+                        : `<span>${product.icon || "📦"}</span>`
+                }
             </div>
 
             <div class="product-info">
 
-                <h3>
-                    ${product.name}
-                </h3>
+                <h3>${product.name}</h3>
 
-                <p class="product-price">
-                    ${formatNaira(product.price)}
+                <p class="category">
+                    ${product.category}
                 </p>
+
+                <h2>
+                    ${formatNaira(product.price)}
+                </h2>
 
                 <p>
                     📍 ${product.location}
                 </p>
 
                 <p>
-                    ⭐ ${product.rating || "New Seller"}
+                    ⭐ ${product.rating || "New"}
                 </p>
 
                 <p>
-                    ${product.category}
+                    Stock: ${product.quantity}
                 </p>
 
                 <button
-                    class="product-button"
                     onclick="viewListing(${product.id})"
+                    class="view-listing"
                 >
                     View Listing
                 </button>
@@ -213,652 +189,402 @@ function createProductCard(product) {
             </div>
 
         </div>
-
     `;
-
 }
 
 
-// =========================================
-// DISPLAY PRODUCTS
-// =========================================
+// ---------- DISPLAY PRODUCTS ----------
+function displayProducts(products = listings) {
 
-function displayProducts(productsToShow = listings) {
+    const container =
+        document.querySelector(".products-grid") ||
+        document.querySelector("#products");
 
-    const productContainers =
-        document.querySelectorAll(".products");
+    if (!container) {
+        return;
+    }
 
-    productContainers.forEach(container => {
+    if (products.length === 0) {
+        container.innerHTML =
+            "<p>No products found.</p>";
+        return;
+    }
 
-        // Don't replace products on profile page
-        // unless it has our dynamic container.
-
-        if (
-            container.closest(".marketplace-products")
-        ) {
-
-            container.innerHTML = "";
-
-            productsToShow.forEach(product => {
-
-                container.innerHTML +=
-                    createProductCard(product);
-
-            });
-
-        }
-
-    });
-
+    container.innerHTML =
+        products.map(createProductCard).join("");
 }
 
 
-// =========================================
+// ==========================================
 // VIEW LISTING
-// =========================================
+// ==========================================
 
 function viewListing(id) {
 
+    const product =
+        listings.find(
+            item => Number(item.id) === Number(id)
+        );
+
+    if (!product) {
+        alert("Product not found.");
+        return;
+    }
+
     localStorage.setItem(
-        "selectedListing",
-        id
+        SELECTED_KEY,
+        JSON.stringify(product)
     );
 
-    window.location.href =
-        "listing.html";
-
+    window.location.href = "listing.html";
 }
 
 
-// =========================================
+// ==========================================
 // LOAD LISTING PAGE
-// =========================================
+// ==========================================
 
 function loadListingPage() {
 
-    const selectedId =
-        Number(
-            localStorage.getItem(
-                "selectedListing"
-            )
+    const selected =
+        JSON.parse(
+            localStorage.getItem(SELECTED_KEY)
         );
 
-    if (!selectedId) {
+    if (!selected) {
         return;
     }
 
     const product =
         listings.find(
-            item => item.id === selectedId
-        );
+            item =>
+                Number(item.id) ===
+                Number(selected.id)
+        ) || selected;
 
-    if (!product) {
-        return;
-    }
 
+    // Product name
     const title =
-        document.querySelector(".listing-details h1");
-
-    const price =
-        document.querySelector(".listing-price");
-
-    const location =
-        document.querySelector(
-            ".listing-details > p:nth-of-type(2)"
-        );
-
-    const image =
-        document.querySelector(".listing-image");
+        document.querySelector(".listing-title") ||
+        document.querySelector("#listing-title");
 
     if (title) {
-        title.textContent =
-            product.name;
+        title.textContent = product.name;
     }
+
+
+    // Price
+    const price =
+        document.querySelector(".listing-price") ||
+        document.querySelector("#listing-price");
 
     if (price) {
         price.textContent =
             formatNaira(product.price);
     }
 
+
+    // Image
+    const image =
+        document.querySelector(".listing-image") ||
+        document.querySelector("#listing-image");
+
     if (image) {
-        image.textContent =
-            product.icon || "📦";
+
+        if (product.image) {
+            image.src = product.image;
+            image.alt = product.name;
+        } else {
+            image.innerHTML =
+                product.icon || "📦";
+        }
     }
 
-    // Update seller information
-    const sellerHeading =
-        document.querySelector(
-            ".seller-box h3"
-        );
 
-    if (sellerHeading) {
+    // Description
+    const description =
+        document.querySelector(".listing-description") ||
+        document.querySelector("#listing-description");
 
-        sellerHeading.textContent =
-            "👤 " + product.seller;
-
+    if (description) {
+        description.textContent =
+            product.description ||
+            "No description available.";
     }
 
-}
 
+    // Seller
+    const seller =
+        document.querySelector(".seller-name") ||
+        document.querySelector("#seller-name");
 
-// =========================================
-// SEARCH
-// =========================================
-
-function searchProducts() {
-
-    const searchInput =
-        document.querySelector(
-            ".marketplace-search input"
-        );
-
-    if (!searchInput) {
-        return;
+    if (seller) {
+        seller.textContent =
+            product.seller || "Unknown Seller";
     }
 
-    const searchText =
-        searchInput.value
-            .toLowerCase()
-            .trim();
 
-    const results =
-        listings.filter(product => {
-
-            return (
-                product.name
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                product.category
-                    .toLowerCase()
-                    .includes(searchText)
-
-                ||
-
-                product.location
-                    .toLowerCase()
-                    .includes(searchText)
-            );
-
-        });
-
-    displayMarketplaceProducts(results);
-
-}
-
-
-// =========================================
-// MARKETPLACE PRODUCTS
-// =========================================
-
-function displayMarketplaceProducts(
-    productsToShow = listings
-) {
-
-    const container =
-        document.querySelector(
-            ".marketplace-products"
-        );
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = "";
-
-    if (productsToShow.length === 0) {
-
-        container.innerHTML = `
-
-            <p class="empty">
-                No products found.
-            </p>
-
-        `;
-
-        return;
-    }
-
-    productsToShow.forEach(product => {
-
-        container.innerHTML +=
-            createProductCard(product);
-
-    });
-
-}
-
-
-// =========================================
-// MARKETPLACE FILTERS
-// =========================================
-
-function filterMarketplace() {
-
-    const selects =
-        document.querySelectorAll(
-            ".filters select"
-        );
-
-    if (selects.length < 3) {
-        return;
-    }
-
-    const category =
-        selects[0].value;
-
+    // Location
     const location =
-        selects[1].value;
+        document.querySelector(".listing-location") ||
+        document.querySelector("#listing-location");
 
-    const sort =
-        selects[2].value;
-
-    let results =
-        [...listings];
-
-
-    // CATEGORY
-
-    if (
-        category &&
-        category !== "All Categories"
-    ) {
-
-        results =
-            results.filter(
-                product =>
-                    product.category === category
-            );
-
+    if (location) {
+        location.textContent =
+            product.location || "Nigeria";
     }
 
 
-    // LOCATION
+    // Quantity / Stock
+    const stock =
+        document.querySelector(".listing-stock") ||
+        document.querySelector("#listing-stock");
 
-    if (
-        location &&
-        location !== "All Locations"
-    ) {
-
-        results =
-            results.filter(
-                product =>
-                    product.location
-                        .toLowerCase()
-                        .includes(
-                            location.toLowerCase()
-                        )
-            );
-
+    if (stock) {
+        stock.textContent =
+            `Available: ${product.quantity}`;
     }
 
+// ======================================
+// ADD TO CART BUTTON
+// ======================================
 
-    // SORT
+const addCartButton =
+    document.querySelector(".add-to-cart");
 
-    if (sort === "Lowest Price") {
-
-        results.sort(
-            (a, b) =>
-                a.price - b.price
-        );
-
-    }
-
-    if (sort === "Highest Price") {
-
-        results.sort(
-            (a, b) =>
-                b.price - a.price
-        );
-
-    }
-
-
-    if (sort === "Newest") {
-
-        results.sort(
-            (a, b) =>
-                b.id - a.id
-        );
-
-    }
-
-
-    displayMarketplaceProducts(
-        results
-    );
-
+if (addCartButton) {
+    addCartButton.onclick = function () {
+        addToCart(product.id);
+    };
 }
 
 
-// =========================================
-// SELL PRODUCT
-// =========================================
+// ======================================
+// BUY NOW BUTTON
+// ======================================
 
-function setupSellForm() {
+const buyNowButton =
+    document.querySelector(".buy-now");
 
-    const form =
-        document.getElementById(
-            "sellForm"
-        );
+if (buyNowButton) {
+    buyNowButton.onclick = function () {
+        addToCart(product.id);
+        window.location.href = "cart.html";
+    };
+}
 
-    if (!form) {
-        return;
+    // ======================================
+    // SAVE LISTING
+    // ======================================
+
+    const saveButton =
+        document.querySelector(".save-listing");
+
+    if (saveButton) {
+
+        saveButton.onclick = function () {
+
+            saveListing(product.id);
+
+        };
     }
 
-    form.addEventListener(
-        "submit",
-        function(event) {
 
-            event.preventDefault();
+    // ======================================
+    // CONTACT SELLER
+    // ======================================
 
+    const contactButton =
+        document.querySelector(".contact-seller");
 
-            const inputs =
-                form.querySelectorAll(
-                    "input, select, textarea"
-                );
+    if (contactButton) {
 
+        contactButton.onclick =
+            function () {
 
-            const productName =
-                inputs[0].value;
-
-            const category =
-                inputs[1].value;
-
-            const price =
-                Number(inputs[2].value);
-
-            const condition =
-                inputs[3].value;
-
-            const location =
-                inputs[4].value;
-
-            const description =
-                inputs[5].value;
-
-            const quantity =
-                Number(inputs[6].value);
-
-
-            if (
-                !productName ||
-                !category ||
-                !price ||
-                !condition ||
-                !location ||
-                !quantity
-            ) {
-
-                alert(
-                    "Please complete all required fields."
-                );
-
-                return;
-            }
-
-
-            const newProduct = {
-
-                id:
-                    Date.now(),
-
-                name:
-                    productName,
-
-                category:
-                    category,
-
-                price:
-                    price,
-
-                condition:
-                    condition,
-
-                location:
-                    location,
-
-                description:
-                    description,
-
-                quantity:
-                    quantity,
-
-                seller:
-                    "My Store",
-
-                rating:
-                    0,
-
-                icon:
-                    getCategoryIcon(category)
+                contactSeller(product);
 
             };
-
-
-            listings.unshift(
-                newProduct
-            );
-
-            saveData();
-
-
-            alert(
-                "Your product has been published successfully!"
-            );
-
-
-            window.location.href =
-                "marketplace.html";
-
-        }
-    );
-
+    }
 }
 
 
-// =========================================
-// CATEGORY ICON
-// =========================================
-
-function getCategoryIcon(category) {
-
-    const icons = {
-
-        "Food": "🍚",
-
-        "Electronics": "📱",
-
-        "Fashion": "👕",
-
-        "Vehicles": "🚗",
-
-        "Farm Products": "🌾",
-
-        "Home": "🏠",
-
-        "Other": "📦"
-
-    };
-
-    return icons[category] || "📦";
-
-}
-
-
-// =========================================
+// ==========================================
 // ADD TO CART
-// =========================================
+// ==========================================
 
 function addToCart(id) {
+    id = Number(id);
 
-    const product =
-        listings.find(
-            item => item.id === id
-        );
+    const product = listings.find(
+        item => Number(item.id) === id
+    );
 
     if (!product) {
+        alert("Product could not be found.");
         return;
     }
 
-
-    const existing =
-        cart.find(
-            item => item.id === id
-        );
-
-
-    if (existing) {
-
-        if (
-            existing.quantity <
-            product.quantity
-        ) {
-
-            existing.quantity++;
-
-        } else {
-
-            alert(
-                "You cannot add more than the available quantity."
-            );
-
-            return;
-        }
-
-    } else {
-
-        cart.push({
-
-            id:
-                product.id,
-
-            name:
-                product.name,
-
-            price:
-                product.price,
-
-            seller:
-                product.seller,
-
-            icon:
-                product.icon,
-
-            quantity:
-                1
-
-        });
-
+    if (!product.quantity || Number(product.quantity) <= 0) {
+        alert("This product is out of stock.");
+        return;
     }
 
-
-    saveData();
-
-    alert(
-        "Product added to cart!"
+    const existing = cart.find(
+        item => Number(item.id) === id
     );
 
+    if (existing) {
+        if (Number(existing.quantity) < Number(product.quantity)) {
+            existing.quantity++;
+        } else {
+            alert("You cannot add more than the available stock.");
+            return;
+        }
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: Number(product.price),
+            seller: product.seller,
+            icon: product.icon || "📦",
+            image: product.image || "",
+            quantity: 1
+        });
+    }
+
+    saveData();
+    updateCartCount();
+    alert(product.name + " has been added to your cart!");
 }
 
+let currentProduct = null;
 
-// =========================================
+function handleAddToCart() {
+    if (!currentProduct) {
+        try {
+            currentProduct = JSON.parse(localStorage.getItem("selectedListing"));
+        } catch (e) {}
+        if (!currentProduct && listings.length > 0) {
+            currentProduct = listings[0];
+        }
+    }
+    if (!currentProduct) {
+        alert("No product selected. Open a product from the Marketplace first.");
+        return;
+    }
+    addToCart(currentProduct.id);
+}
+
+function handleBuyNow() {
+    if (!currentProduct) {
+        try {
+            currentProduct = JSON.parse(localStorage.getItem("selectedListing"));
+        } catch (e) {}
+        if (!currentProduct && listings.length > 0) {
+            currentProduct = listings[0];
+        }
+    }
+    if (!currentProduct) {
+        alert("No product selected. Open a product from the Marketplace first.");
+        return;
+    }
+    addToCart(currentProduct.id);
+    window.location.href = "cart.html";
+}
+// ==========================================
 // CART TOTAL
-// =========================================
+// ==========================================
 
 function calculateCartTotal() {
 
     return cart.reduce(
-        (total, item) =>
-            total +
-            item.price * item.quantity,
+        (total, item) => {
+
+            return total +
+                Number(item.price) *
+                Number(item.quantity);
+
+        },
         0
     );
-
 }
 
 
-// =========================================
+// ==========================================
 // DISPLAY CART
-// =========================================
+// ==========================================
 
 function displayCart() {
 
-    const cartContainer =
-        document.querySelector(
-            ".cart-items"
-        );
+    const container =
+        document.querySelector(".cart-items");
 
-    if (!cartContainer) {
+    if (!container) {
         return;
     }
 
 
     if (cart.length === 0) {
 
-        cartContainer.innerHTML = `
-
-            <div class="empty">
-
-                <h3>Your cart is empty.</h3>
+        container.innerHTML = `
+            <div class="empty-cart">
+                <h2>Your cart is empty 🛒</h2>
 
                 <p>
-                    Find something you like in the marketplace.
+                    Add some products to your cart.
                 </p>
 
-                <a
-                    href="marketplace.html"
-                    class="product-button"
-                >
-                    Browse Marketplace
+                <a href="marketplace.html">
+                    Continue Shopping
                 </a>
-
             </div>
-
         `;
+
+        updateCartSummary();
 
         return;
     }
 
 
-    cartContainer.innerHTML = "";
+    container.innerHTML =
+        cart.map(item => {
+
+            return `
+                <div class="cart-item">
+
+                    <div class="cart-product">
+
+                        <div class="cart-image">
+                            ${
+                                item.image
+                                    ? `<img
+                                        src="${item.image}"
+                                        alt="${item.name}"
+                                      >`
+                                    : `<span>
+                                        ${item.icon || "📦"}
+                                      </span>`
+                            }
+                        </div>
+
+                        <div>
+                            <h3>
+                                ${item.name}
+                            </h3>
+
+                            <p>
+                                ${formatNaira(item.price)}
+                            </p>
+                        </div>
+
+                    </div>
 
 
-    cart.forEach(item => {
-
-        cartContainer.innerHTML += `
-
-            <div class="cart-item">
-
-                <div class="cart-image">
-                    ${item.icon || "📦"}
-                </div>
-
-
-                <div class="cart-info">
-
-                    <h3>
-                        ${item.name}
-                    </h3>
-
-                    <p>
-                        ${item.seller}
-                    </p>
-
-                    <p class="product-price">
-                        ${formatNaira(item.price)}
-                    </p>
-
-
-                    <div class="quantity">
+                    <div class="quantity-controls">
 
                         <button
-                            onclick="changeQuantity(
-                                ${item.id},
-                                -1
-                            )"
+                            onclick="changeQuantity(${item.id}, -1)"
                         >
                             −
                         </button>
@@ -868,54 +594,53 @@ function displayCart() {
                         </span>
 
                         <button
-                            onclick="changeQuantity(
-                                ${item.id},
-                                1
-                            )"
+                            onclick="changeQuantity(${item.id}, 1)"
                         >
                             +
                         </button>
 
                     </div>
 
+
+                    <div class="cart-item-total">
+
+                        <strong>
+                            ${formatNaira(
+                                item.price *
+                                item.quantity
+                            )}
+                        </strong>
+
+                        <button
+                            onclick="removeFromCart(${item.id})"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
                 </div>
+            `;
 
-
-                <button
-                    class="remove-button"
-                    onclick="removeFromCart(
-                        ${item.id}
-                    )"
-                >
-                    Remove
-                </button>
-
-            </div>
-
-            <hr>
-
-        `;
-
-    });
+        }).join("");
 
 
     updateCartSummary();
-
 }
 
 
-// =========================================
+// ==========================================
 // CHANGE QUANTITY
-// =========================================
+// ==========================================
 
-function changeQuantity(
-    id,
-    amount
-) {
+function changeQuantity(id, amount) {
+
+    id = Number(id);
 
     const item =
         cart.find(
-            item => item.id === id
+            product =>
+                Number(product.id) === id
         );
 
     if (!item) {
@@ -923,36 +648,38 @@ function changeQuantity(
     }
 
 
-    item.quantity += amount;
-
-
-    if (item.quantity <= 0) {
-
-        removeFromCart(id);
-
-        return;
-
-    }
-
-
     const product =
         listings.find(
-            product => product.id === id
+            product =>
+                Number(product.id) === id
         );
 
 
+    item.quantity =
+        Number(item.quantity) +
+        Number(amount);
+
+
+    // Don't allow less than 1
+    if (item.quantity < 1) {
+
+        item.quantity = 1;
+    }
+
+
+    // Don't exceed stock
     if (
         product &&
-        item.quantity > product.quantity
+        item.quantity >
+        Number(product.quantity)
     ) {
 
         item.quantity =
-            product.quantity;
+            Number(product.quantity);
 
         alert(
-            "You have reached the available quantity."
+            "You cannot add more than the available stock."
         );
-
     }
 
 
@@ -960,335 +687,124 @@ function changeQuantity(
 
     displayCart();
 
+    updateCartCount();
 }
 
 
-// =========================================
+// ==========================================
 // REMOVE FROM CART
-// =========================================
+// ==========================================
 
 function removeFromCart(id) {
 
+    id = Number(id);
+
     cart =
         cart.filter(
-            item => item.id !== id
+            item =>
+                Number(item.id) !== id
         );
 
     saveData();
 
     displayCart();
 
+    updateCartCount();
 }
 
 
-// =========================================
+// ==========================================
 // CART SUMMARY
-// =========================================
+// ==========================================
 
 function updateCartSummary() {
 
-    const subtotal =
-        calculateCartTotal();
-
-    const delivery =
-        cart.length > 0
-            ? 3000
-            : 0;
-
     const total =
-        subtotal + delivery;
+        calculateCartTotal();
 
 
     const summary =
-        document.querySelector(
-            ".cart-summary"
-        );
-
-    if (!summary) {
-        return;
-    }
-
-
-    summary.innerHTML = `
-
-        <p>
-
-            Subtotal:
-
-            <strong>
-                ${formatNaira(subtotal)}
-            </strong>
-
-        </p>
-
-
-        <p>
-
-            Delivery:
-
-            <strong>
-                ${formatNaira(delivery)}
-            </strong>
-
-        </p>
-
-
-        <h2>
-
-            Total:
-
-            ${formatNaira(total)}
-
-        </h2>
-
-
-        <button
-            onclick="checkout()"
-        >
-            Proceed to Checkout
-        </button>
-
-    `;
-
-}
-
-
-// =========================================
-// CHECKOUT
-// =========================================
-
-function checkout() {
-
-    if (cart.length === 0) {
-
-        alert(
-            "Your cart is empty."
-        );
-
-        return;
-
-    }
-
-
-    const subtotal =
-        calculateCartTotal();
-
-    const delivery =
-        3000;
-
-    const total =
-        subtotal + delivery;
-
-
-    const newOrder = {
-
-        id:
-            "NM" +
-            Math.floor(
-                10000 +
-                Math.random() * 90000
-            ),
-
-        items:
-            [...cart],
-
-        subtotal:
-            subtotal,
-
-        delivery:
-            delivery,
-
-        total:
-            total,
-
-        status:
-            "Order Confirmed",
-
-        date:
-            new Date()
-                .toLocaleDateString()
-
-    };
-
-
-    orders.unshift(
-        newOrder
-    );
-
-
-    cart = [];
-
-
-    saveData();
-
-
-    alert(
-        "Order placed successfully!"
-    );
-
-
-    window.location.href =
-        "orders.html";
-
-}
-
-
-// =========================================
-// DISPLAY ORDERS
-// =========================================
-
-function displayOrders() {
-
-    const orderContainer =
-        document.querySelector(
-            ".orders-list"
-        );
-
-    if (!orderContainer) {
-        return;
-    }
-
-
-    if (orders.length === 0) {
-
-        orderContainer.innerHTML = `
-
-            <div class="empty">
-
-                <h3>
-                    You have no orders yet.
-                </h3>
-
-                <a
-                    href="marketplace.html"
-                    class="product-button"
-                >
-                    Start Shopping
-                </a>
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    orderContainer.innerHTML = "";
-
-
-    orders.forEach(order => {
-
-        const itemNames =
-            order.items
-                .map(item => item.name)
-                .join(", ");
-
-
-        orderContainer.innerHTML += `
-
-            <div class="order">
-
-                <div>
-
-                    <p>
-                        Order #${order.id}
-                    </p>
-
-                    <h3>
-                        ${itemNames}
-                    </h3>
-
-                    <p>
-                        Date: ${order.date}
-                    </p>
-
-                    <p class="product-price">
-                        ${formatNaira(order.total)}
-                    </p>
-
-                </div>
-
-
-                <div class="order-status">
-
-                    🟢 ${order.status}
-
-                </div>
-
-            </div>
+        document.querySelector(".cart-summary");
+
+    if (summary) {
+
+        summary.innerHTML = `
+
+            <h2>Cart Summary</h2>
+
+            <p>
+                Subtotal:
+                <strong>
+                    ${formatNaira(total)}
+                </strong>
+            </p>
+
+            <p>
+                Delivery:
+                <strong>
+                    Calculated at checkout
+                </strong>
+            </p>
 
             <hr>
 
+            <h2>
+                Total:
+                ${formatNaira(total)}
+            </h2>
+
+            <button
+                onclick="checkout()"
+                class="checkout-button"
+            >
+                Proceed to Checkout
+            </button>
+
         `;
-
-    });
-
-}
-
-
-// =========================================
-// SAVE LISTING
-// =========================================
-
-function saveListing(id) {
-
-    if (
-        savedListings.includes(id)
-    ) {
-
-        savedListings =
-            savedListings.filter(
-                savedId =>
-                    savedId !== id
-            );
-
-        alert(
-            "Listing removed from saved items."
-        );
-
-    } else {
-
-        savedListings.push(id);
-
-        alert(
-            "Listing saved!"
-        );
-
     }
 
 
-    saveData();
+    const totalElement =
+        document.querySelector("#cart-total");
 
+    if (totalElement) {
+
+        totalElement.textContent =
+            formatNaira(total);
+    }
 }
 
 
-// =========================================
-// CONTACT SELLER
-// =========================================
-
-function contactSeller() {
-
-    window.location.href =
-        "messages.html";
-
-}
-
-
-// =========================================
-// UPDATE CART COUNT
-// =========================================
+// ==========================================
+// CART COUNT
+// ==========================================
 
 function updateCartCount() {
 
     const totalItems =
         cart.reduce(
-            (total, item) =>
-                total + item.quantity,
+            (total, item) => {
+
+                return total +
+                    Number(item.quantity);
+
+            },
             0
         );
 
 
+    // Elements with #cart-count
+    const cartCount =
+        document.querySelector("#cart-count");
+
+    if (cartCount) {
+
+        cartCount.textContent =
+            totalItems;
+    }
+
+
+    // Cart links
     const cartLinks =
         document.querySelectorAll(
             'a[href="cart.html"]'
@@ -1301,33 +817,390 @@ function updateCartCount() {
             `🛒 Cart (${totalItems})`;
 
     });
+}
+
+
+// ==========================================
+// CHECKOUT
+// ==========================================
+
+function checkout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    const total = calculateCartTotal();
+
+    const order = {
+        id: "ORD-" + Date.now(),
+        items: [...cart],
+        total: total,
+        date: new Date().toLocaleString(),
+        status: "Pending"
+    };
+
+    orders.push(order);
+
+    // Reduce stock
+    cart.forEach(cartItem => {
+        const product = listings.find(
+            item => Number(item.id) === Number(cartItem.id)
+        );
+        if (product) {
+            product.quantity = Math.max(
+                0,
+                Number(product.quantity) - Number(cartItem.quantity)
+            );
+        }
+    });
+
+    cart = [];
+    saveData();
+    updateCartCount();
+
+    alert("Order placed successfully! 🎉");
+    window.location.href = "orders.html";
+}
+
+// ==========================================
+// SEARCH PRODUCTS
+// ==========================================
+
+function searchProducts() {
+
+    const input =
+        document.querySelector("#search-input") ||
+        document.querySelector(".search-input");
+
+    if (!input) {
+        return;
+    }
+
+
+    const search =
+        input.value
+            .toLowerCase()
+            .trim();
+
+
+    const results =
+        listings.filter(product => {
+
+            return (
+                product.name
+                    .toLowerCase()
+                    .includes(search) ||
+
+                product.category
+                    .toLowerCase()
+                    .includes(search) ||
+
+                product.location
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+        });
+
+
+    displayProducts(results);
+}
+
+
+// ==========================================
+// FILTER MARKETPLACE
+// ==========================================
+
+function filterMarketplace(category) {
+
+    if (
+        !category ||
+        category === "all"
+    ) {
+
+        displayProducts(listings);
+
+        return;
+    }
+
+
+    const filtered =
+        listings.filter(
+            product =>
+                product.category ===
+                category
+        );
+
+
+    displayProducts(filtered);
+}
+
+
+// ==========================================
+// SELL PRODUCT
+// ==========================================
+
+function setupSellForm() {
+
+    const form =
+        document.querySelector("#sell-form") ||
+        document.querySelector(".sell-form");
+
+    if (!form) {
+        return;
+    }
+
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const name =
+                form.querySelector(
+                    '[name="name"]'
+                )?.value;
+
+
+            const category =
+                form.querySelector(
+                    '[name="category"]'
+                )?.value;
+
+
+            const price =
+                form.querySelector(
+                    '[name="price"]'
+                )?.value;
+
+
+            const quantity =
+                form.querySelector(
+                    '[name="quantity"]'
+                )?.value;
+
+
+            const location =
+                form.querySelector(
+                    '[name="location"]'
+                )?.value;
+
+
+            const seller =
+                form.querySelector(
+                    '[name="seller"]'
+                )?.value ||
+                "NaijaMarket Seller";
+
+
+            if (
+                !name ||
+                !category ||
+                !price ||
+                !quantity ||
+                !location
+            ) {
+
+                alert(
+                    "Please fill in all required fields."
+                );
+
+                return;
+            }
+
+
+            const newProduct = {
+
+                id:
+                    Date.now(),
+
+                name:
+                    name,
+
+                category:
+                    category,
+
+                price:
+                    Number(price),
+
+                quantity:
+                    Number(quantity),
+
+                location:
+                    location,
+
+                seller:
+                    seller,
+
+                rating:
+                    5,
+
+                icon:
+                    getCategoryIcon(category),
+
+                description:
+                    "New product listed on NaijaMarket AI."
+
+            };
+
+
+            listings.push(newProduct);
+
+            saveData();
+
+
+            alert(
+                "Your product has been listed successfully!"
+            );
+
+
+            form.reset();
+
+            window.location.href =
+                "marketplace.html";
+
+        }
+    );
+}
+
+
+// ==========================================
+// CATEGORY ICON
+// ==========================================
+
+function getCategoryIcon(category) {
+
+    const icons = {
+
+        Food: "🍚",
+
+        Electronics: "📱",
+
+        Fashion: "👕",
+
+        "Farm Products": "🌾",
+
+        Beauty: "💄",
+
+        Home: "🏠",
+
+        Vehicles: "🚗",
+
+        Other: "📦"
+
+    };
+
+
+    return icons[category] || "📦";
+}
+
+
+// ==========================================
+// SAVE LISTING
+// ==========================================
+
+function saveListing(id) {
+
+    id = Number(id);
+
+
+    if (
+        saved.some(
+            item =>
+                Number(item.id) === id
+        )
+    ) {
+
+        alert(
+            "This listing is already saved."
+        );
+
+        return;
+    }
+
+
+    const product =
+        listings.find(
+            item =>
+                Number(item.id) === id
+        );
+
+
+    if (!product) {
+        return;
+    }
+
+
+    saved.push(product);
+
+    saveData();
+
+
+    alert(
+        "Listing saved successfully ❤️"
+    );
+}
+
+
+// ==========================================
+// CONTACT SELLER
+// ==========================================
+
+function contactSeller(product) {
+
+    alert(
+        `Contact ${product.seller} about ${product.name}.`
+    );
+}
+
+
+// ==========================================
+// MARKETPLACE PAGE
+// ==========================================
+
+function displayMarketplaceProducts() {
+
+    displayProducts(listings);
 
 }
 
 
-// =========================================
-// INITIALIZE APP
-// =========================================
+// ==========================================
+// PAGE STARTUP
+// ==========================================
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
-
+    function () {
 
         // Marketplace
-
         displayMarketplaceProducts();
 
-        const searchInput =
-            document.querySelector(
-                ".marketplace-search input"
-            );
 
+        // Listing page
+        loadListingPage();
+
+
+        // Cart page
+        displayCart();
+
+
+        // Sell page
+        setupSellForm();
+
+
+        // Cart number
+        updateCartCount();
+
+
+        // Search button
         const searchButton =
             document.querySelector(
-                ".marketplace-search button"
+                "#search-button"
             );
-
 
         if (searchButton) {
 
@@ -1335,15 +1208,20 @@ document.addEventListener(
                 "click",
                 searchProducts
             );
-
         }
 
+
+        // Search input ENTER key
+        const searchInput =
+            document.querySelector(
+                "#search-input"
+            );
 
         if (searchInput) {
 
             searchInput.addEventListener(
-                "keydown",
-                function(event) {
+                "keypress",
+                function (event) {
 
                     if (
                         event.key === "Enter"
@@ -1355,53 +1233,7 @@ document.addEventListener(
 
                 }
             );
-
         }
-
-
-        // Filters
-
-        const filters =
-            document.querySelectorAll(
-                ".filters select"
-            );
-
-
-        filters.forEach(
-            select => {
-
-                select.addEventListener(
-                    "change",
-                    filterMarketplace
-                );
-
-            }
-        );
-
-
-        // Sell page
-
-        setupSellForm();
-
-
-        // Listing page
-
-        loadListingPage();
-
-
-        // Cart page
-
-        displayCart();
-
-
-        // Orders page
-
-        displayOrders();
-
-
-        // Cart count
-
-        updateCartCount();
 
     }
 );
